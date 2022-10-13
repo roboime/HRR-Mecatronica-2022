@@ -5,12 +5,12 @@ if 1 %0 para rodar alg aprendizado
     parametros_simulacao;
     robo_DataFile;
     gait_rest = 0.8;
-    gait=0.1; %periodo para andar
+    gait=0.2; %periodo para andar
     gait_c=0.6; %periodo para inclinar latral
     passos=8; %numero de passos
     ang_tr=10; %inclinação de torso
-    ang_q=0; %inclinaço lateral
-    ang_agach=[15 -40 25]; %angs agachamento 1 tornozelo 2 joelho 3 quadril
+    ang_q=-3; %inclinaço lateral
+    ang_agach=[15 -30 15]; %angs agachamento 1 tornozelo 2 joelho 3 quadril
     azf=1500; %razao e amplitude de deslocamento horizontal do pe
     taxa=1/400; %Taxa de move 
     frac = 1;
@@ -92,7 +92,20 @@ for cont_passos=1:passos
     end
 end
 clear  Q X_E Z_E X_D Z_D X Y Z Tr 
-Q=Qr;
+Q(:,1)=Qr(:,12);
+Q(:,2)=Qr(:,11);
+Q(:,3)=Qr(:,10);
+Q(:,4)=Qr(:,9);
+Q(:,5)=Qr(:,8);
+Q(:,6)=-Qr(:,7);
+Q(:,7)=-Qr(:,6);
+Q(:,8)=Qr(:,5);
+Q(:,9)=Qr(:,4);
+Q(:,10)=Qr(:,3);
+Q(:,11)=Qr(:,2);
+Q(:,12)=Qr(:,1);
+
+
 %% Cinem�tica (Desenvoler o movimento) 
 lx=[-67.55 0  0     0  0 0 0     0 0   0  0     0  67.55]; %Comprimentos na direção x, ultimo � transforma��o da ferramenta
 ly=[0      0  0     0  0 0 102   0 0   0  0     0  0]; %Comprimentos na dire��o y
@@ -339,21 +352,14 @@ if graf
     Maux = M.';
     saida = -Maux(:);
     
-    inicio_fim = 24*round((gait + gait_c)/taxa);
-    meio = 24*round(2*(gait + gait_c)/taxa);
+    meio = 24*round((2*gait+gait_rest)/taxa);
     
     if csv
-%         fileID = fopen('first.bin','w');
-%         fwrite(fileID,saida(1:inicio_fim),'int16','l');
-%         fclose(fileID);
         
-        fileID = fopen('forward.bin','w');
-        fwrite(fileID,saida,'int16','l');
+        fileID = fopen('turn.bin','w');
+        fwrite(fileID,saida(round(gait_c/taxa)+1:round(gait_c/taxa)+meio),'int16','l');
         fclose(fileID);
         
-%         fileID = fopen('last.bin','w');
-%         fwrite(fileID,saida(length(saida) + 1 - inicio_fim:length(saida)),'int16','l');
-%         fclose(fileID);
     end    
 end
 j=length(Q); %ÚLTIMAS LINHAS DO CÓDIGO

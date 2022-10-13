@@ -99,8 +99,8 @@ Z_D(1)=0;
                 %Xd=[0 0 0 0 0 0 ];
                 %Xd=[axf*sin(pi*j*taxa/gait) 0 azf*cos(pi*j*taxa/gait)  0 0 0 0 0];  
             else 
-                Xd=[axf*sin(pi*(j-Pc_g*(gait/taxa))*taxa*(1-Pc_g)/gait) azf*cos(pi*(j-Pc_g*(gait/taxa))*taxa*(1-Pc_g)/gait) 0  0 0 0]; 
-            end            
+                Xd=[cicvelsubida(j,round(gait/taxa),axf) cicvelsobedesce(j,round(gait/taxa),azf)  0  0 0 0]; 
+            end           
             
            %Xd=[0.05 0.05 0  0 0 0 ]; %a*2*fCMz*cos(pi*j*taxa/gait Velocidade
             Xd=transpose(Xd);
