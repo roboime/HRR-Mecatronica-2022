@@ -202,9 +202,9 @@ Z_D(1)=0;
    
             if j>Pc_g*round(gait/taxa)
                 if j>3
-                   q(1)=q(1)-(q_aux(1)+ang_agach(1))/round(gait/taxa);
-                   q(2)=q(2)-(q_aux(2)+ang_agach(2))/round(gait/taxa);
-                   q(3)=q(3)-(q_aux(3)+ang_agach(3))/round(gait/taxa);
+                   q(1)=q(1)- cicvelsubida(j,round(gait/taxa),q_aux(1)+ang_agach(1));
+                   q(2)=q(2)-cicvelsubida(j,round(gait/taxa),q_aux(2)+ang_agach(2));
+                   q(3)=q(3)-cicvelsubida(j,round(gait/taxa),q_aux(3)+ang_agach(3));
                 end
             end  
             for cont_ver=1:6                

@@ -10,7 +10,7 @@ if 1 %0 para rodar alg aprendizado
     passos=8; %numero de passos
     ang_tr=10; %inclinação de torso
     ang_q=-3; %inclinaço lateral
-    ang_agach=[15 -30 15]; %angs agachamento 1 tornozelo 2 joelho 3 quadril
+    ang_agach=[10 -30 20]; %angs agachamento 1 tornozelo 2 joelho 3 quadril
     azf=1500; %razao e amplitude de deslocamento horizontal do pe
     taxa=1/400; %Taxa de move 
     frac = 1;
