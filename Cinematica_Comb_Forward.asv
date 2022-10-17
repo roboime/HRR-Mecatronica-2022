@@ -4,14 +4,14 @@ if 1 %0 para rodar alg aprendizado
     clc
     parametros_simulacao;
     robo_DataFile;
-    gait=0.5; %periodo para andar
-    gait_c=1; %periodo para inclinar latral
-    passos=3; %numero de passos
-    ang_tr=12; %inclinação de torso
+    gait=0.8; %periodo para andar
+    gait_c=1.2; %periodo para inclinar latral
+    passos=5; %numero de passos
+    ang_tr=8; %inclinação de torso
     ang_q=8; %inclinaço lateral
     ang_agach=[15 -30 15]; %angs agachamento 1 tornozelo 2 joelho 3 quadril
     axf=5000; %Razao e amplitude de subida do pe
-    azf=1000; %razao e amplitude de deslocamento horizontal do pe
+    azf=1500; %razao e amplitude de deslocamento horizontal do pe
     taxa=1/400; %Taxa de move 
 end
 
@@ -23,7 +23,7 @@ dvmx= 116.62/1024; %rpm
 delta=0.0001;
 graf=1; %0 para alg gen
 grafs=0; %0 para alg gen
-csv=0; %0 para alg gen  1 para exportar
+csv=1; %0 para alg gen  1 para exportar
 
 for j = 1:round(gait_c/taxa)/2
     Qin(j,2)=cicsubida(j,round(gait_c/taxa/2),ang_agach(1)); %agachamento
@@ -95,17 +95,17 @@ for cont_passos=1:passos
     end
     for j=(round(gait_c/taxa)/2+1):(round(gait_c/taxa)/2+round(gait/taxa))
         if cont_passos == passos
-            Qr(j+(round(gait/taxa)+round(gait_c/taxa))*(cont_passos-1),2)=Qr(j-1+(round(gait/taxa)+round(gait_c/taxa))*(cont_passos-1),2);
-            Qr(j+(round(gait/taxa)+round(gait_c/taxa))*(cont_passos-1),3)=Qr(j-1+(round(gait/taxa)+round(gait_c/taxa))*(cont_passos-1),3);
-            Qr(j+(round(gait/taxa)+round(gait_c/taxa))*(cont_passos-1),4)=Qr(j-1+(round(gait/taxa)+round(gait_c/taxa))*(cont_passos-1),4);
+            Qr(j+(round(gait/taxa)+round(gait_c/taxa))*(cont_passos-1),9)=Qr(j-1+(round(gait/taxa)+round(gait_c/taxa))*(cont_passos-1),1);
+            Qr(j+(round(gait/taxa)+round(gait_c/taxa))*(cont_passos-1),10)=Qr(j-1+(round(gait/taxa)+round(gait_c/taxa))*(cont_passos-1),3);
+            Qr(j+(round(gait/taxa)+round(gait_c/taxa))*(cont_passos-1),11)=Qr(j-1+(round(gait/taxa)+round(gait_c/taxa))*(cont_passos-1),4);
         else
-            Qr(j+(round(gait/taxa)+round(gait_c/taxa))*(cont_passos-1),2)=Q(j-round(gait_c/taxa)/2+round(gait/taxa)*(cont_passos-1),1);
-            Qr(j+(round(gait/taxa)+round(gait_c/taxa))*(cont_passos-1),3)=Q(j-round(gait_c/taxa)/2+round(gait/taxa)*(cont_passos-1),2);
-            Qr(j+(round(gait/taxa)+round(gait_c/taxa))*(cont_passos-1),4)=Q(j-round(gait_c/taxa)/2+round(gait/taxa)*(cont_passos-1),3);   
+            Qr(j+(round(gait/taxa)+round(gait_c/taxa))*(cont_passos-1),9)=Q(j-round(gait_c/taxa)/2+round(gait/taxa)*(cont_passos-1),4);
+            Qr(j+(round(gait/taxa)+round(gait_c/taxa))*(cont_passos-1),10)=Q(j-round(gait_c/taxa)/2+round(gait/taxa)*(cont_passos-1),5);
+            Qr(j+(round(gait/taxa)+round(gait_c/taxa))*(cont_passos-1),11)=Q(j-round(gait_c/taxa)/2+round(gait/taxa)*(cont_passos-1),3);   
         end
-         Qr(j+(round(gait/taxa)+round(gait_c/taxa))*(cont_passos-1),9)=Q(j-round(gait_c/taxa)/2+round(gait/taxa)*(cont_passos-1),4);
-         Qr(j+(round(gait/taxa)+round(gait_c/taxa))*(cont_passos-1),10)=Q(j-round(gait_c/taxa)/2+round(gait/taxa)*(cont_passos-1),5);
-         Qr(j+(round(gait/taxa)+round(gait_c/taxa))*(cont_passos-1),11)=Q(j-round(gait_c/taxa)/2+round(gait/taxa)*(cont_passos-1),6);
+         Qr(j+(round(gait/taxa)+round(gait_c/taxa))*(cont_passos-1),2)=Q(j-round(gait_c/taxa)/2+round(gait/taxa)*(cont_passos-1),1);
+         Qr(j+(round(gait/taxa)+round(gait_c/taxa))*(cont_passos-1),3)=Q(j-round(gait_c/taxa)/2+round(gait/taxa)*(cont_passos-1),2);
+         Qr(j+(round(gait/taxa)+round(gait_c/taxa))*(cont_passos-1),4)=Q(j-round(gait_c/taxa)/2+round(gait/taxa)*(cont_passos-1),3);
         
         Qr(j+(round(gait/taxa)+round(gait_c/taxa))*(cont_passos-1),6)=Q_tr(j-round(gait_c/taxa)/2+round(gait/taxa)*(cont_passos-1),1);
         Qr(j+(round(gait/taxa)+round(gait_c/taxa))*(cont_passos-1),7)=Q_tr(j-round(gait_c/taxa)/2+round(gait/taxa)*(cont_passos-1),2);
@@ -122,7 +122,7 @@ for cont_passos=1:passos
     ang3 = Qr(end,3);
     ang4 = Qr(end,4);
     
-    for j=(round(gait_c/taxa)/2+round(gait/taxa)+1):(round(gait_c/taxa)+round(gait/taxa)+1) 
+    for j=(round(gait_c/taxa)/2+round(gait/taxa)+1):(round(gait_c/taxa)+round(gait/taxa)) 
         Qr(j+(round(gait/taxa)+round(gait_c/taxa))*(cont_passos-1),6)=Qr(j-1+(round(gait/taxa)+round(gait_c/taxa))*(cont_passos-1),6);
         Qr(j+(round(gait/taxa)+round(gait_c/taxa))*(cont_passos-1),7)=Qr(j-1+(round(gait/taxa)+round(gait_c/taxa))*(cont_passos-1),7);
         if mod(cont_passos,2)==1
@@ -139,11 +139,11 @@ for cont_passos=1:passos
         end
          if cont_passos == passos
              Qr(j+(round(gait/taxa)+round(gait_c/taxa))*(cont_passos-1),2)=ang2 - cicsubida(j-round(gait_c/taxa/2)-round(gait/taxa),round(gait_c/taxa/2),ang2-ang_agach(1)); %agachamento
-             Qr(j+(round(gait/taxa)+round(gait_c/taxa))*(cont_passos-1),3)=ang3 - (ang3-ang_agach(2))*(j-round(gait_c/taxa)/2-round(gait/taxa))/(round(gait_c/taxa)/2);
-             Qr(j+(round(gait/taxa)+round(gait_c/taxa))*(cont_passos-1),4)=ang4 - (ang4-ang_agach(3))*(j-round(gait_c/taxa)/2-round(gait/taxa))/(round(gait_c/taxa)/2);
-             Qr(j+(round(gait/taxa)+round(gait_c/taxa))*(cont_passos-1),9)=ang4 - (ang4-ang_agach(3))*(j-round(gait_c/taxa)/2-round(gait/taxa))/(round(gait_c/taxa)/2);
-             Qr(j+(round(gait/taxa)+round(gait_c/taxa))*(cont_passos-1),10)=ang3 - (ang3-ang_agach(2))*(j-round(gait_c/taxa)/2-round(gait/taxa))/(round(gait_c/taxa)/2);
-             Qr(j+(round(gait/taxa)+round(gait_c/taxa))*(cont_passos-1),11)=ang2 - (ang2-ang_agach(1))*(j-round(gait_c/taxa)/2-round(gait/taxa))/(round(gait_c/taxa)/2);
+             Qr(j+(round(gait/taxa)+round(gait_c/taxa))*(cont_passos-1),3)=ang3 - cicsubida(j-round(gait_c/taxa/2)-round(gait/taxa),round(gait_c/taxa/2),ang3-ang_agach(2));
+             Qr(j+(round(gait/taxa)+round(gait_c/taxa))*(cont_passos-1),4)=ang4 - cicsubida(j-round(gait_c/taxa/2)-round(gait/taxa),round(gait_c/taxa/2),ang4-ang_agach(3));
+             Qr(j+(round(gait/taxa)+round(gait_c/taxa))*(cont_passos-1),9)=ang4 - cicsubida(j-round(gait_c/taxa/2)-round(gait/taxa),round(gait_c/taxa/2),ang4-ang_agach(3));
+             Qr(j+(round(gait/taxa)+round(gait_c/taxa))*(cont_passos-1),10)=ang3 - cicsubida(j-round(gait_c/taxa/2)-round(gait/taxa),round(gait_c/taxa/2),ang3-ang_agach(2));
+             Qr(j+(round(gait/taxa)+round(gait_c/taxa))*(cont_passos-1),11)=ang2 - cicsubida(j-round(gait_c/taxa/2)-round(gait/taxa),round(gait_c/taxa/2),ang2-ang_agach(1));
          else    
             Qr(j+(round(gait/taxa)+round(gait_c/taxa))*(cont_passos-1),2)=Qr(j-1+(round(gait/taxa)+round(gait_c/taxa))*(cont_passos-1),2);
             Qr(j+(round(gait/taxa)+round(gait_c/taxa))*(cont_passos-1),3)=Qr(j-1+(round(gait/taxa)+round(gait_c/taxa))*(cont_passos-1),3);
@@ -155,7 +155,13 @@ for cont_passos=1:passos
     end
 end
 clear  Q X_E Z_E X_D Z_D X Y Z Tr 
+
 Q=[Qin;Qr];
+
+stoppos = -[0 ang_agach(1)/dpax ang_agach(2)/dpmx ang_agach(3)/dpax 0 0 0 0 ang_agach(3)/dpax ang_agach(2)/dpmx ang_agach(1)/dpax 0];
+stopvel = 255*ones(size(stoppos));
+stop = [stoppos; stopvel];
+
 %% Cinem�tica (Desenvoler o movimento) 
 lx=[-67.55 0  0     0  0 0 0     0 0   0  0     0  67.55]; %Comprimentos na direção x, ultimo � transforma��o da ferramenta
 ly=[0      0  0     0  0 0 102   0 0   0  0     0  0]; %Comprimentos na dire��o y
@@ -283,7 +289,6 @@ Z_D(1)=0;
                 q(k)=Q(j+(round((gait+gait_c)/taxa))*(cont_passos-1),k);
             end
           
-      
             if mod(cont_passos,2)==1
                 X_E(round((gait+gait_c)/taxa)*(cont_passos-1)+j+1)=X(length(X));
                 Z_E(round((gait+gait_c)/taxa)*(cont_passos-1)+j+1)=Z(length(Z));
@@ -298,19 +303,12 @@ Z_D(1)=0;
             end
         end
     end
-%Q_aux=Q;
-%for i=1:length(Q_aux)
-    %Q(i+length(Q_aux),8:-1:1)=Q_aux(i,1:8);
-%end
+
 if 1
 Q_aux=Q;
 tam=length(Q);
-% for i=1:round(gait_c/2/taxa)
-%     for j=1:12
-%         Q(tam+i,j)=Q_aux(round((gait_c+gait)/taxa) + i,j);
-%     end
-% end
 end
+
 if  0 %Ativa espelhamento de passo
     Q_aux=Q;
     tam=length(Q);
@@ -389,38 +387,39 @@ if graf
     if 1 %Completo
          for i=1:length(Q)
             for j=1:12
-                if j == 1 || j == 2 || j == 3 || j == 10 || j==11 || j==12 %MX
-                    M((i-1)*12+j,1)=round(Q(i,j)/dpmx);
-                    M((i-1)*12+j,2)=round(RPM(i,j)/dvmx);
+                if j == 3 || j == 5 || j == 8 || j == 10 %MX
+                    M((i-1)*12+j,1)=-round(Q(i,j)/dpmx);
+                    M((i-1)*12+j,2)=ceil(RPM(i,j)/dvmx);
                 else
-                    M((i-1)*12+j,1)=round(Q(i,j)/dpax);
-                    M((i-1)*12+j,2)=round(RPM(i,j)/dvax);
+                    M((i-1)*12+j,1)=-round(Q(i,j)/dpax);
+                    M((i-1)*12+j,2)=ceil(RPM(i,j)/dvax);
                 end
             end
         end
     end
     Maux = M.';
-    saida = -Maux(:);
+    saida = Maux(:);
     
-    primeiro = 24*round(gait_c/2);
+    primeiro = 24*round(gait_c/taxa)/2;
     inicio_fim = 24*round((gait + gait_c)/taxa);
     meio = 24*round(2*(gait + gait_c)/taxa);
+    length(saida) - inicio_fim
     
     if csv
-        fileID = fopen('primeiro.bin','w');
-        fwrite(fileID,saida(primeiro:primeiro+inicio_fim),'int16','l');
+        fileID = fopen('passos\stop.bin','w');
+        fwrite(fileID,stop,'int16','l');
         fclose(fileID);
 
-        fileID = fopen('first.bin','w');
+        fileID = fopen('passos\first.bin','w');
         fwrite(fileID,saida(primeiro+1:primeiro+inicio_fim),'int16','l');
         fclose(fileID);
         
-        fileID = fopen('forward.bin','w');
-        fwrite(fileID,saida(primeiro + inicio_fim + 1:primeiro + inicio_fim + meio),'int16','l');
+        fileID = fopen('passos\forward.bin','w');
+        fwrite(fileID,saida(primeiro + inicio_fim +1 :primeiro + inicio_fim + meio),'int16','l');
         fclose(fileID);
         
-        fileID = fopen('last.bin','w');
-        fwrite(fileID,saida(length(saida) + 1 - inicio_fim:length(saida)),'int16','l');
+        fileID = fopen('passos\last.bin','w');
+        fwrite(fileID,saida(length(saida) - inicio_fim +1:length(saida)),'int16','l');
         fclose(fileID);
     end    
 end
