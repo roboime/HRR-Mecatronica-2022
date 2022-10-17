@@ -6,7 +6,7 @@ if 1 %0 para rodar alg aprendizado
     robo_DataFile;
     gait=0.8; %periodo para andar
     gait_c=1.2; %periodo para inclinar latral
-    passos=3; %numero de passos
+    passos=9; %numero de passos
     ang_tr=8; %inclinação de torso
     ang_q=8; %inclinaço lateral
     ang_agach=[15 -30 15]; %angs agachamento 1 tornozelo 2 joelho 3 quadril
