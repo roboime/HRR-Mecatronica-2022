@@ -7,11 +7,11 @@ if 1 %0 para rodar alg aprendizado
     gait=0.8; %periodo para andar
     gait_c=1.5; %periodo para inclinar latral
     passos=4; %numero de passos
-    ang_tr=0; %inclinação de torso
-    ang_q=0; %inclinaço lateral
+    ang_tr=10; %inclinação de torso
+    ang_q=16; %inclinaço lateral
     ang_agach=[30 -60 30]; %angs agachamento 1 tornozelo 2 joelho 3 quadril
     axf=2500; %Razao e amplitude de subida do pe
-    azf=1000; %razao e amplitude de deslocamento horizontal do pe
+    azf=1500; %razao e amplitude de deslocamento horizontal do pe
     taxa=1/100; %Taxa de move 
 end
 
@@ -309,7 +309,7 @@ Q_aux=Q;
 Q_aux(:,1) = -Q_aux(:,1);
 Q_aux(:,12)= -Q_aux(:,12);
 Q_aux(:,4) = -Q_aux(:,4);
-Q_aux(:,9) = Q_aux(:,9);
+Q_aux(:,9) = -Q_aux(:,9);
 Q_aux(:,6) = -Q_aux(:,6);
 Q_aux(:,7) = -Q_aux(:,7);
 tam=length(Q);
