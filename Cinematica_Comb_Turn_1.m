@@ -5,7 +5,7 @@ if 1 %0 para rodar alg aprendizado
     parametros_simulacao;
     robo_DataFile;
     gait=0.5; %periodo para andar
-    gait_c=0.5; %periodo para inclinar latral
+    gait_c=0.8; %periodo para inclinar latral
     passos=2; %numero de passos
     ang_tr=12; %inclinação de torso
     ang_q=8; %inclinaço lateral
@@ -23,7 +23,7 @@ dvmx= 116.62/1024; %rpm
 delta=0.0001;
 graf=1; %0 para alg gen
 grafs=0; %0 para alg gen
-csv=0; %0 para alg gen  1 para exportar
+csv=1; %0 para alg gen  1 para exportar
 
 for j = 1:round(gait_c/taxa)/2
     Qin(j,2)=cicsubida(j,round(gait_c/taxa/2),ang_agach(1)); %agachamento
@@ -170,6 +170,21 @@ for cont_passos=1:passos
 end
 clear  Q X_E Z_E X_D Z_D X Y Z Tr 
 Q=[Qin;Qr(1:round((2*gait+1.5*gait_c)/taxa),:)];
+
+%turn left
+Qinv(:,1)=-Q(:,12);
+Qinv(:,2)=Q(:,11);
+Qinv(:,3)=Q(:,10);
+Qinv(:,4)=Q(:,9);
+Qinv(:,5)=-Q(:,8);
+Qinv(:,6)=-Q(:,7);
+Qinv(:,7)=-Q(:,6);
+Qinv(:,8)=-Q(:,5);
+Qinv(:,9)=Q(:,4);
+Qinv(:,10)=Q(:,3);
+Qinv(:,11)=Q(:,2);
+Qinv(:,12)=-Q(:,1);
+
 %% Cinem�tica (Desenvoler o movimento) 
 lx=[-67.55 0  0     0  0 0 0     0 0   0  0     0  67.55]; %Comprimentos na direção x, ultimo � transforma��o da ferramenta
 ly=[0      0  0     0  0 0 102   0 0   0  0     0  0]; %Comprimentos na dire��o y
@@ -396,6 +411,18 @@ if graf
                 RPM(i,j)=-RPM(i,j);
             end
         end
+        for j=1:12
+            RPMinv(i,j)=(Qinv(i,j)-Qinv(i-1,j))*60/(taxa*360);
+            if RPMinv(i,j)>50
+                RPMinv(i,j)=50;
+            end
+            if RPMinv(i,j)<-50
+                RPMinv(i,j)=-50;
+            end
+            if RPMinv(i,j)<0
+                RPMinv(i,j)=-RPMinv(i,j);
+            end
+        end
     end
     figure
     plot(RPM)
@@ -403,26 +430,35 @@ if graf
     if 1 %Completo
          for i=1:length(Q)
             for j=1:12
-                if j == 1 || j == 2 || j == 3 || j == 10 || j==11 || j==12 %MX
-                    M((i-1)*12+j,1)=round(Q(i,j)/dpmx);
-                    M((i-1)*12+j,2)=round(RPM(i,j)/dvmx);
+                if j == 3 || j == 5 || j == 8 || j == 10 %MX
+                    M((i-1)*12+j,1)=-round(Q(i,j)/dpmx);
+                    M((i-1)*12+j,2)=ceil(RPM(i,j)/dvmx);
+                    Minv((i-1)*12+j,1)=-round(Qinv(i,j)/dpmx);
+                    Minv((i-1)*12+j,2)=ceil(RPMinv(i,j)/dvmx);
                 else
-                    M((i-1)*12+j,1)=round(Q(i,j)/dpax);
-                    M((i-1)*12+j,2)=round(RPM(i,j)/dvax);
+                    M((i-1)*12+j,1)=-round(Q(i,j)/dpax);
+                    M((i-1)*12+j,2)=ceil(RPM(i,j)/dvax);
+                    Minv((i-1)*12+j,1)=-round(Qinv(i,j)/dpax);
+                    Minv((i-1)*12+j,2)=ceil(RPMinv(i,j)/dvax);
                 end
             end
         end
     end
     Maux = M.';
-    saida = -Maux(:);
+    Mauxinv = Minv.';
+    saida = Maux(:);
+    saidainv = Mauxinv(:);
     
-    primeiro = 24*round(gait_c/2);
-    inicio_fim = 24*round((gait + gait_c)/taxa);
-    meio = 24*round(2*(gait + gait_c)/taxa);
+    primeiro = 24*round(gait_c/2/taxa);
+    meio = 24*round((2*gait + 1.5*gait_c)/taxa);
     
     if csv
-        fileID = fopen('primeiro.bin','w');
-        fwrite(fileID,saida(primeiro:primeiro+inicio_fim),'int16','l');
+        fileID = fopen('turn\right.bin','w');
+        fwrite(fileID,saida(primeiro+1:primeiro+meio),'int16','l');
+        fclose(fileID);
+
+        fileID = fopen('turn\left.bin','w');
+        fwrite(fileID,saidainv(primeiro+1:primeiro+meio),'int16','l');
         fclose(fileID);
     end    
 end

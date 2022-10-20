@@ -1,15 +1,15 @@
 %HELICOIDES
 if 0
-    clear all
-    clc
-    close all
-    axf=100;
-    azf=80;
-    gait=0.4;
-    passos=8;
-    grafs=1; % quanto quer mostrar a cinemática graf = 1
-    taxa=1/400; %Taxa de move 
-    delta=0.0001;      
+%     clear all
+%     clc
+%     close all
+%     axf=100;
+%     azf=80;
+%     gait=0.4;
+%     passos=8;
+%     grafs=1; % quanto quer mostrar a cinemática graf = 1
+%     taxa=1/400; %Taxa de move 
+%     delta=0.0001;      
 end
 Pc_g=0;
 %csv=0; %csv = 1 para gerar o arquivo de memória pra o robô real
