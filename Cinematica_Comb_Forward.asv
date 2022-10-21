@@ -11,9 +11,9 @@ if 1 %0 para rodar alg aprendizado
     ang_q=18; %inclinaço lateral
     ang_agach=[30 -60 30]; %angs agachamento 1 tornozelo 2 joelho 3 quadril
     axf=2500; %Razao e amplitude de subida do pe
-    azf=2500; %razao e amplitude de deslocamento horizontal do pe
+    azf=3100; %razao e amplitude de deslocamento horizontal do pe
     taxa=1/100; %Taxa de move 
-    corr_ang_tr = 0;
+    corr_ang_tr = 1;
     corr_ang_q = 0.8;
 end
 
