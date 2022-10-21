@@ -1,4 +1,4 @@
-pos = -20*[-1/dpax 0 0 0 1/dpmx 0 0 1/dpmx 0 0 0 -1/dpax];
+pos = [-20/dpax 0 0 0 20/dpmx 0 0 20/dpmx 0 0 0 -20/dpax];
 vel = 255*ones(size(pos));
 posfinal = [];
 velfinal = [];
