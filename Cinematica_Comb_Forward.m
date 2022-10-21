@@ -4,7 +4,7 @@ if 1 %0 para rodar alg aprendizado
     clc
     parametros_simulacao;
     robo_DataFile;
-    gait=2; %periodo para andar
+    gait=1.3; %periodo para andar
     gait_c=1.5; %periodo para inclinar lateral
     passos=4; %numero de passos
     ang_tr=8; %inclinação de torso
