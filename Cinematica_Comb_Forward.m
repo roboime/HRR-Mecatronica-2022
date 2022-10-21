@@ -4,14 +4,14 @@ if 1 %0 para rodar alg aprendizado
     clc
     parametros_simulacao;
     robo_DataFile;
-    gait=1.5; %periodo para andar
-    gait_c=2; %periodo para inclinar latral
+    gait=2; %periodo para andar
+    gait_c=1.5; %periodo para inclinar lateral
     passos=4; %numero de passos
     ang_tr=8; %inclinação de torso
     ang_q=18; %inclinaço lateral
     ang_agach=[30 -60 30]; %angs agachamento 1 tornozelo 2 joelho 3 quadril
-    axf=2500; %Razao e amplitude de subida do pe
-    azf=3000; %razao e amplitude de deslocamento horizontal do pe
+    axf=2500; %Razao e amplitude de deslocamento horizontal do pe
+    azf=3000; %razao e amplitude de subida do pe
     taxa=1/100; %Taxa de move 
     corr_ang_tr = 1;
     corr_ang_q = 0.8;

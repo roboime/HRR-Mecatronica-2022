@@ -4,15 +4,15 @@ if 1 %0 para rodar alg aprendizado
     clc
     parametros_simulacao;
     robo_DataFile;
-    gait=0.5; %periodo para andar
-    gait_c=0.8; %periodo para inclinar latral
+    gait=2; %periodo para andar
+    gait_c=1.5; %periodo para inclinar lateral
     passos=2; %numero de passos
-    ang_tr=12; %inclinação de torso
-    ang_q=8; %inclinaço lateral
-    ang_agach=[15 -30 15]; %angs agachamento 1 tornozelo 2 joelho 3 quadril
-    axf=5000; %Razao e amplitude de subida do pe
-    azf=1500; %razao e amplitude de deslocamento horizontal do pe
-    taxa=1/400; %Taxa de move 
+    ang_tr=8; %inclinação de torso
+    ang_q=0.8*18; %inclinaço lateral
+    ang_agach=[30 -60 30]; %angs agachamento 1 tornozelo 2 joelho 3 quadril
+    axf=2500; %Razao e amplitude de deslocamento horizontal do pe
+    azf=3000; %razao e amplitude de subida do pe
+    taxa=1/100; %Taxa de move 
 end
 
 dpax= 300/1024; %graus
@@ -173,16 +173,17 @@ Q=[Qin;Qr(1:round((2*gait+1.5*gait_c)/taxa),:)];
 
 %turn left
 Qinv(:,1)=-Q(:,12);
-Qinv(:,2)=Q(:,11);
-Qinv(:,3)=Q(:,10);
+Qinv(:,2)=-Q(:,11);
+Qinv(:,3)=-Q(:,10);
 Qinv(:,4)=Q(:,9);
-Qinv(:,5)=-Q(:,8);
+Qinv(:,5)=Q(:,8);
 Qinv(:,6)=-Q(:,7);
+
 Qinv(:,7)=-Q(:,6);
-Qinv(:,8)=-Q(:,5);
+Qinv(:,8)=Q(:,5);
 Qinv(:,9)=Q(:,4);
-Qinv(:,10)=Q(:,3);
-Qinv(:,11)=Q(:,2);
+Qinv(:,10)=-Q(:,3);
+Qinv(:,11)=-Q(:,2);
 Qinv(:,12)=-Q(:,1);
 
 %% Cinem�tica (Desenvoler o movimento) 
@@ -432,18 +433,19 @@ if graf
             for j=1:12
                 if j == 3 || j == 5 || j == 8 || j == 10 %MX
                     M((i-1)*12+j,1)=-round(Q(i,j)/dpmx);
-                    M((i-1)*12+j,2)=ceil(RPM(i,j)/dvmx);
+                    M((i-1)*12+j,2)=0;
                     Minv((i-1)*12+j,1)=-round(Qinv(i,j)/dpmx);
-                    Minv((i-1)*12+j,2)=ceil(RPMinv(i,j)/dvmx);
+                    Minv((i-1)*12+j,2)=0;
                 else
                     M((i-1)*12+j,1)=-round(Q(i,j)/dpax);
-                    M((i-1)*12+j,2)=ceil(RPM(i,j)/dvax);
+                    M((i-1)*12+j,2)=0;
                     Minv((i-1)*12+j,1)=-round(Qinv(i,j)/dpax);
-                    Minv((i-1)*12+j,2)=ceil(RPMinv(i,j)/dvax);
+                    Minv((i-1)*12+j,2)=0;
                 end
             end
         end
     end
+    Minv;
     Maux = M.';
     Mauxinv = Minv.';
     saida = Maux(:);
@@ -453,13 +455,11 @@ if graf
     meio = 24*round((2*gait + 1.5*gait_c)/taxa);
     
     if csv
-        fileID = fopen('turn\right.bin','w');
-        fwrite(fileID,saida(primeiro+1:primeiro+meio),'int16','l');
-        fclose(fileID);
 
         fileID = fopen('turn\left.bin','w');
         fwrite(fileID,saidainv(primeiro+1:primeiro+meio),'int16','l');
         fclose(fileID);
+
     end    
 end
 j=length(Q); %ÚLTIMAS LINHAS DO CÓDIGO
