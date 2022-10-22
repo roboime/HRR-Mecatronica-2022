@@ -458,15 +458,16 @@ if graf
     saidainv = Mauxinv(:);
     
     primeiro = 24*round(gait_c/2/taxa);
-    meio = 24*round((2*gait + 1.5*gait_c)/taxa);
+    meio = 24*round((gait + gait_c)/taxa);
+    intervalo = 24*round((gait_c)/taxa/2);
+    fim = 24*round(gait/taxa);
     
     if csv
 
         fileID = fopen('turn\right.bin','w');
-        fwrite(fileID,saida(primeiro+1:primeiro+meio),'int16','l');
+        fwrite(fileID,[saida(primeiro+1:primeiro+meio); saida(primeiro+meio+intervalo+1:primeiro+meio+intervalo+fim)],'int16','l');
         fclose(fileID);
-
-
+        
     end    
 end
 j=length(Q); %ÚLTIMAS LINHAS DO CÓDIGO

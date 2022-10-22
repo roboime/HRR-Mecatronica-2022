@@ -457,14 +457,13 @@ if graf
     fim = 24*round(gait/taxa);
     
     if csv
+
         fileID = fopen('turn\left.bin','w');
-        fwrite(fileID,[saidainv(primeiro+1:primeiro+meio); saidainv(primeiro+meio+intervalo+1:primeiro+meio+intervalo+fim)],'int16','l');
+        fwrite(fileID,[saidainv(primeiro+1:primeiro+meio); saidainv(primeiro+meio+intervalo+1:primeiro+meio+intervalo+fi)],'int16','l');
         fclose(fileID);
 
     end    
 end
-
-
 j=length(Q); %ÚLTIMAS LINHAS DO CÓDIGO
 for i=0:j-1 
     Time(i+1)=i*taxa;
