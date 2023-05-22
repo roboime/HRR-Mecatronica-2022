@@ -1,15 +1,15 @@
 %HELICOIDES
 if 0
-    clear all
-    clc
-    close all
-    axf=100;
-    azf=80;
-    gait=0.4;
-    passos=8;
-    grafs=1; % quanto quer mostrar a cinemática graf = 1
-    taxa=1/400; %Taxa de move 
-    delta=0.0001;      
+%     clear all
+%     clc
+%     close all
+%     axf=100;
+%     azf=80;
+%     gait=0.4;
+%     passos=8;
+%     grafs=1; % quanto quer mostrar a cinemática graf = 1
+%     taxa=1/400; %Taxa de move 
+%     delta=0.0001;      
 end
 Pc_g=0;
 %csv=0; %csv = 1 para gerar o arquivo de memória pra o robô real
@@ -99,10 +99,8 @@ Z_D(1)=0;
                 %Xd=[0 0 0 0 0 0 ];
                 %Xd=[axf*sin(pi*j*taxa/gait) 0 azf*cos(pi*j*taxa/gait)  0 0 0 0 0];  
             else 
-                Xd=[cicvelsubida(j,round(gait/taxa),axf) cicvelsobedesce(j,round(gait/taxa),azf) 0  0 0 0]; 
-                scatter(j,Xd(2))
-                hold on
-            end            
+                Xd=[cicvelsubida(j,round(gait/taxa),axf) cicvelsobedesce(j,round(gait/taxa),azf)  0  0 0 0]; 
+            end           
             
            %Xd=[0.05 0.05 0  0 0 0 ]; %a*2*fCMz*cos(pi*j*taxa/gait Velocidade
             Xd=transpose(Xd);
@@ -194,7 +192,7 @@ Z_D(1)=0;
                 %J(10,k)=(Theta_Zj(i-5)-Theta_Z(i-5))/delta;                 
                 q(k)=q(k)-delta;
             end
-            Jq=pinv(J,1e-5); 
+            Jq=inv(J);
             %det(Jq)
             %det(J)
             qd=Jq*Xd;
@@ -204,9 +202,9 @@ Z_D(1)=0;
    
             if j>Pc_g*round(gait/taxa)
                 if j>3
-                   q(1)=q(1)-(q_aux(1)+ang_agach(1))/round(gait/taxa);
-                   q(2)=q(2)-(q_aux(2)+ang_agach(2))/round(gait/taxa);
-                   q(3)=q(3)-(q_aux(3)+ang_agach(3))/round(gait/taxa);
+                   q(1)=q(1)- cicvelsubida(j,round(gait/taxa),q_aux(1)+ang_agach(1));
+                   q(2)=q(2)-cicvelsubida(j,round(gait/taxa),q_aux(2)+ang_agach(2));
+                   q(3)=q(3)-cicvelsubida(j,round(gait/taxa),q_aux(3)+ang_agach(3));
                 end
             end  
             for cont_ver=1:6                
@@ -362,4 +360,3 @@ j=length(Q); %ÚLTIMAS LINHAS DO CÓDIGO
 for i=0:j-1 
     Time(i+1)=i*taxa;
 end 
-hold off

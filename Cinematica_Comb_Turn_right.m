@@ -474,4 +474,4 @@ j=length(Q); %ÚLTIMAS LINHAS DO CÓDIGO
 for i=0:j-1 
     Time(i+1)=i*taxa;
 end 
-inputsim = [Time.' Q*2*pi/180];
+inputsim = [Time.' Q*pi/180];

@@ -9,12 +9,12 @@ if 1 %0 para rodar alg aprendizado
     passos=4; %numero de passos
     ang_tr=8; %inclinação de torso
     ang_q=17; %inclinaço lateral
-    ang_agach=[26 -60 34]; %angs agachamento 1 tornozelo 2 joelho 3 quadril
-    axf=2500; %Razao e amplitude de deslocamento horizontal do pe
-    azf=3500; %razao e amplitude de subida do pe
+    ang_agach=[30 -60 30]; %angs agachamento 1 tornozelo 2 joelho 3 quadril
+    axf=2500; %Razao de amplitude de deslocamento horizontal do pe
+    azf=3100; %razao de amplitude de subida do pe
     taxa=1/100; %Taxa de move 
     corr_ang_tr = 1;
-    corr_ang_q = 0.6;
+    corr_ang_q = 1;
 end
 
 dpax= 300/1024; %graus
@@ -434,19 +434,19 @@ if graf
     meio = 24*round(2*(gait + gait_c)/taxa);
     
     if csv
-        fileID = fopen('passos\stop.bin','w');
+        fileID = fopen('forward\stop.bin','w');
         fwrite(fileID,stop,'int16','l');
         fclose(fileID);
 
-        fileID = fopen('passos\first.bin','w');
+        fileID = fopen('forward\first.bin','w');
         fwrite(fileID,saida(primeiro+1:primeiro + inicio_fim),'int16','l');
         fclose(fileID);
         
-        fileID = fopen('passos\forward.bin','w');
+        fileID = fopen('forward\forward.bin','w');
         fwrite(fileID,saida(primeiro + inicio_fim +1 :primeiro + inicio_fim + meio),'int16','l');
         fclose(fileID);
         
-        fileID = fopen('passos\last.bin','w');
+        fileID = fopen('forward\last.bin','w');
         fwrite(fileID,saida(length(saida) - inicio_fim +1:length(saida)),'int16','l');
         fclose(fileID);
     end    

@@ -192,7 +192,7 @@ Z_D(1)=0;
                 %J(10,k)=(Theta_Zj(i-5)-Theta_Z(i-5))/delta;                 
                 q(k)=q(k)-delta;
             end
-            Jq=pinv(J,1e-5); 
+            Jq=inv(J);
             %det(Jq)
             %det(J)
             qd=Jq*Xd;
